@@ -5,7 +5,7 @@ const DashboardKaryawan = () => {
   const [loanSummary, setLoanSummary] = useState({ hutangUang: 0, hutangBarang: 0 });
   const [isLoading, setIsLoading] = useState(true);
 
-  const API_URL = 'http://localhost:5012/api';
+  const API_URL = 'http://10.10.10.100:5000/api';
   const user = JSON.parse(localStorage.getItem('user'));
   const currentUserId = user ? user.id : null;
   const currentUserName = user ? user.name : 'Guest';

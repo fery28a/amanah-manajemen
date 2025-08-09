@@ -10,7 +10,7 @@ const LaporanPage = () => {
   const [attendanceReport, setAttendanceReport] = useState([]);
   const [loanReport, setLoanReport] = useState([]);
 
-  const API_URL = 'http://localhost:5012/api';
+  const API_URL = 'http://10.10.10.100:5000/api';
 
   useEffect(() => {
     const fetchEmployees = async () => {

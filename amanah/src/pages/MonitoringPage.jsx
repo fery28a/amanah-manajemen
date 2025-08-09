@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 const MonitoringPage = () => {
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().slice(0, 10));
   const [monitoredEmployees, setMonitoredEmployees] = useState([]);
-  const API_URL = 'http://localhost:5012/api';
+  const API_URL = 'http://10.10.10.100:5000/api';
 
   const fetchMonitoredEmployees = async () => {
     try {
