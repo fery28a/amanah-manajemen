@@ -10,7 +10,8 @@ const LaporanPage = () => {
   const [attendanceReport, setAttendanceReport] = useState([]);
   const [loanReport, setLoanReport] = useState([]);
 
-  const API_URL = 'http://10.10.10.100:5000/api';
+  const API_URL = 'http://10.10.10.200:5000/api';
+
 
   useEffect(() => {
     const fetchEmployees = async () => {
@@ -38,7 +39,6 @@ const LaporanPage = () => {
       } else {
         setAttendanceReport([]);
       }
-
       const loanRes = await fetch(`${API_URL}/loans/report?employeeId=${selectedEmployeeId}&month=${selectedMonth}`);
       if (loanRes.ok) {
         const loanData = await loanRes.json();
@@ -75,7 +75,7 @@ const LaporanPage = () => {
   const allDatesInMonth = getAllDatesInMonth(selectedMonth);
 
   const totalHadir = attendanceReport.filter((att) => att.status === 'present' || att.status === 'completed').length;
-  const totalAbsen = allDatesInMonth.length - totalHadir;
+  const totalAbsen = attendanceReport.filter((att) => att.status === 'absent').length;
 
   const totalHutangUang = loanReport
     .filter((loan) => loan.type === 'Uang' && (loan.status === 'approved' || loan.status === 'paid'))
@@ -109,7 +109,6 @@ const LaporanPage = () => {
     }
   };
 
-  // Logika Ekspor ke Excel
   const handleExportExcel = () => {
     let dataToExport = [];
     let fileName = '';

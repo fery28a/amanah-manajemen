@@ -5,7 +5,7 @@ const AbsensiPage = () => {
   const [attendance, setAttendance] = useState([]);
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().slice(0, 10));
   const [jobs, setJobs] = useState({});
-  const API_URL = 'http://10.10.10.100:5000/api';
+  const API_URL = 'http://10.10.10.200:5000/api';
 
   const fetchEmployees = async () => {
     try {

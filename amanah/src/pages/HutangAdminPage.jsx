@@ -7,7 +7,8 @@ const HutangAdminPage = () => {
   const [totalMonthlyDebt, setTotalMonthlyDebt] = useState(0);
   const [paidOffMessage, setPaidOffMessage] = useState('');
 
-  const API_URL = 'http://10.10.10.100:5000/api';
+  const API_URL = 'http://10.10.10.200:5000/api';
+
   
   const fetchLoanRequests = async () => {
     try {

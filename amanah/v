@@ -1,0 +1,6 @@
+db.employees.insertOne({
+  "name": "HANI",
+  "username": "hani",
+  "password": "hanifah",
+  "role": "admin"
+})
