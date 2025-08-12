@@ -10,7 +10,7 @@ const HutangKaryawanPage = ({ employeeId }) => {
   const [selectedMonth, setSelectedMonth] = useState(currentMonthKey);
   const [successMessage, setSuccessMessage] = useState('');
 
-  const API_URL = 'http://10.10.10.200:5000/api';
+  const API_URL = '/api';
 
   
   const user = JSON.parse(localStorage.getItem('user'));

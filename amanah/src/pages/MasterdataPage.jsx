@@ -11,7 +11,7 @@ const MasterdataPage = () => {
   const [editingId, setEditingId] = useState(null);
 
   // URL API backend
-  const API_URL = 'http://localhost:5012/api/employees';
+  const API_URL = '/api/employees';
 
   // Fetch data karyawan dari backend
   const fetchEmployees = async () => {
