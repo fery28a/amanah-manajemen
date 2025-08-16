@@ -3,9 +3,19 @@ import React, { useState, useEffect } from 'react';
 const AbsensiPage = () => {
   const [employees, setEmployees] = useState([]);
   const [attendance, setAttendance] = useState([]);
-  const [selectedDate, setSelectedDate] = useState(new Date().toISOString().slice(0, 10));
+  // Menggunakan fungsi untuk mendapatkan tanggal lokal
+  const getLocalDate = () => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = (today.getMonth() + 1).toString().padStart(2, '0');
+    const day = today.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+  
+  const [selectedDate, setSelectedDate] = useState(getLocalDate());
   const [jobs, setJobs] = useState({});
   const API_URL = '/api';
+
   const fetchEmployees = async () => {
     try {
       const response = await fetch(`${API_URL}/employees`);
@@ -38,6 +48,21 @@ const AbsensiPage = () => {
   useEffect(() => {
     fetchAttendance();
   }, [selectedDate, employees]);
+  
+  // Logika baru untuk pergantian tanggal otomatis pada jam 00:01
+  useEffect(() => {
+    const checkDateChange = () => {
+      const today = getLocalDate();
+      if (selectedDate !== today) {
+        setSelectedDate(today);
+      }
+    };
+
+    // Periksa setiap 30 detik untuk memastikan akurasi
+    const interval = setInterval(checkDateChange, 30000); 
+
+    return () => clearInterval(interval);
+  }, [selectedDate]);
 
   const combinedData = employees.map(emp => {
     const attRecord = attendance.find(att => String(att.employeeId._id) === String(emp._id));
@@ -47,6 +72,7 @@ const AbsensiPage = () => {
 
   const getCurrentTime = () => new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
   const getFormattedDate = (dateString) => {
+    if (!dateString) return '-';
     const options = { day: 'numeric', month: 'long', year: 'numeric' };
     return new Date(dateString).toLocaleDateString('id-ID', options);
   };
@@ -133,7 +159,7 @@ const AbsensiPage = () => {
   };
 
   const renderControls = (employee) => {
-    const isToday = selectedDate === new Date().toISOString().slice(0, 10);
+    const isToday = selectedDate === getLocalDate();
     if (!isToday) return null;
 
     switch (employee.status) {
