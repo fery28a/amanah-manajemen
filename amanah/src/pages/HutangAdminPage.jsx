@@ -7,6 +7,23 @@ const HutangAdminPage = () => {
   const [totalMonthlyDebt, setTotalMonthlyDebt] = useState(0);
   const [paidOffMessage, setPaidOffMessage] = useState('');
 
+  // --- START PERUBAHAN ---
+  // Fungsi untuk menghasilkan daftar bulan yang tersedia secara dinamis (misalnya 12 bulan terakhir)
+  const generateAvailableMonths = (count = 12) => {
+    const months = [];
+    let date = new Date();
+    for (let i = 0; i < count; i++) {
+      const year = date.getFullYear();
+      const month = (date.getMonth() + 1).toString().padStart(2, '0');
+      months.push(`${year}-${month}`);
+      date.setMonth(date.getMonth() - 1);
+    }
+    return months;
+  };
+  
+  const availableMonths = generateAvailableMonths();
+  // --- END PERUBAHAN ---
+
   const API_URL = '/api';
 
   
@@ -92,20 +109,8 @@ const HutangAdminPage = () => {
       }
     }
   };
-  
-  const getAvailableMonths = () => {
-    const targetYear = 2025; // Mengambil tahun dari data yang sudah ada
-    const months = [];
-    for (let month = 1; month <= 12; month++) {
-      const monthKey = `${targetYear}-${String(month).padStart(2, '0')}`;
-      months.push(monthKey);
-    }
-    // Urutkan secara menurun (bulan terbaru dulu)
-    return months.sort((a, b) => b.localeCompare(a));
-  };
-  
-  const availableMonths = getAvailableMonths();
-  
+
+  // availableMonths lama: const availableMonths = ['2025-08', '2025-07'];
   const getTotalDebtPerEmployee = (employee) => {
     return employee.requests
       .filter(req => req.status === 'approved' || req.status === 'paid')
