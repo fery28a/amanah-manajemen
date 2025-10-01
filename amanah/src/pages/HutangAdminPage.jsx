@@ -92,8 +92,20 @@ const HutangAdminPage = () => {
       }
     }
   };
-
-  const availableMonths = ['2025-08', '2025-07'];
+  
+  const getAvailableMonths = () => {
+    const targetYear = 2025; // Mengambil tahun dari data yang sudah ada
+    const months = [];
+    for (let month = 1; month <= 12; month++) {
+      const monthKey = `${targetYear}-${String(month).padStart(2, '0')}`;
+      months.push(monthKey);
+    }
+    // Urutkan secara menurun (bulan terbaru dulu)
+    return months.sort((a, b) => b.localeCompare(a));
+  };
+  
+  const availableMonths = getAvailableMonths();
+  
   const getTotalDebtPerEmployee = (employee) => {
     return employee.requests
       .filter(req => req.status === 'approved' || req.status === 'paid')
