@@ -11,6 +11,26 @@ const DashboardAdmin = () => {
 
   const API_URL = '/api';
 
+  // --- START PERUBAHAN ---
+  // Fungsi untuk menghasilkan daftar bulan yang tersedia secara dinamis (misalnya 12 bulan terakhir)
+  const generateAvailableMonths = (count = 12) => {
+    const months = [];
+    let date = new Date();
+    // Loop untuk mendapatkan bulan dari saat ini hingga 'count' bulan ke belakang
+    for (let i = 0; i < count; i++) {
+      // Format YYYY-MM
+      const year = date.getFullYear();
+      const month = (date.getMonth() + 1).toString().padStart(2, '0');
+      months.push(`${year}-${month}`);
+      // Pindah ke bulan sebelumnya
+      date.setMonth(date.getMonth() - 1);
+    }
+    return months; // Sudah dalam urutan menurun (terbaru ke terlama)
+  };
+
+  const availableMonths = generateAvailableMonths();
+  // --- END PERUBAHAN ---
+  
   const fetchDashboardData = async () => {
     try {
       const [attendanceRes, loansRes] = await Promise.all([
@@ -54,19 +74,8 @@ const DashboardAdmin = () => {
     const options = { day: 'numeric', month: 'long', year: 'numeric' };
     return new Date(dateString).toLocaleDateString('id-ID', options);
   };
-  
-  const getAvailableMonths = () => {
-    const targetYear = 2025; // Mengambil tahun dari data yang sudah ada
-    const months = [];
-    for (let month = 1; month <= 12; month++) {
-      const monthKey = `${targetYear}-${String(month).padStart(2, '0')}`;
-      months.push(monthKey);
-    }
-    // Urutkan secara menurun (bulan terbaru dulu)
-    return months.sort((a, b) => b.localeCompare(a));
-  };
 
-  const availableMonths = getAvailableMonths();
+  // availableMonths lama: const availableMonths = ['2025-08', '2025-07'];
 
   return (
     <div className="p-8 bg-gray-100 min-h-screen">
