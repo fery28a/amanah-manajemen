@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const Employee = require('../models/Employee');
+const Attendance = require('../models/Attendance');
+const Loan = require('../models/Loan');
 
 // GET semua karyawan
 router.get('/', async (req, res) => {
@@ -36,8 +38,18 @@ router.put('/:id', async (req, res) => {
 // DELETE karyawan
 router.delete('/:id', async (req, res) => {
   try {
-    await Employee.findByIdAndDelete(req.params.id);
-    res.json({ message: 'Karyawan berhasil dihapus' });
+    const employeeId = req.params.id;
+
+    // Hapus semua data absensi yang terkait dengan karyawan
+    await Attendance.deleteMany({ employeeId: employeeId });
+
+    // Hapus semua data hutang yang terkait dengan karyawan
+    await Loan.deleteMany({ employeeId: employeeId });
+
+    // Hapus data karyawan itu sendiri
+    await Employee.findByIdAndDelete(employeeId);
+
+    res.json({ message: 'Karyawan dan semua data terkait berhasil dihapus' });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
