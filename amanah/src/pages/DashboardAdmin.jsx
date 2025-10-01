@@ -54,8 +54,19 @@ const DashboardAdmin = () => {
     const options = { day: 'numeric', month: 'long', year: 'numeric' };
     return new Date(dateString).toLocaleDateString('id-ID', options);
   };
+  
+  const getAvailableMonths = () => {
+    const targetYear = 2025; // Mengambil tahun dari data yang sudah ada
+    const months = [];
+    for (let month = 1; month <= 12; month++) {
+      const monthKey = `${targetYear}-${String(month).padStart(2, '0')}`;
+      months.push(monthKey);
+    }
+    // Urutkan secara menurun (bulan terbaru dulu)
+    return months.sort((a, b) => b.localeCompare(a));
+  };
 
-  const availableMonths = ['2025-08', '2025-07'];
+  const availableMonths = getAvailableMonths();
 
   return (
     <div className="p-8 bg-gray-100 min-h-screen">
